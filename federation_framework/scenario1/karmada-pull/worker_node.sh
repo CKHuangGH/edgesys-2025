@@ -21,9 +21,9 @@ sudo install -o root -g root -m 0755 kubectl /usr/bin/kubectl
 curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 
 echo "copy metrics_server.yaml-----------------------"
-mv /root/edgesys-2025/federation_framework/karmada-pull/metrics_server.yaml /root/
-cp /root/edgesys-2025/federation_framework/karmada-pull/node_list /root/
-cp /root/edgesys-2025/federation_framework/karmada-pull/patch.sh /root/
+mv /root/edgesys-2025/federation_framework/scenario1/karmada-pull/metrics_server.yaml /root/
+cp /root/edgesys-2025/federation_framework/scenario1/karmada-pull/node_list /root/
+cp /root/edgesys-2025/federation_framework/scenario1/karmada-pull/patch.sh /root/
 
 echo "Install Helm3-----------------------"
 wget -c https://get.helm.sh/helm-v3.8.2-linux-amd64.tar.gz

@@ -17,13 +17,11 @@ else
 fi
 
 while read -r ip; do
-    # 忽略空行和注释行
     if [[ "$ip" =~ ^[[:space:]]*$ || "$ip" =~ ^\s*# ]]; then
         continue
     fi
 
-    # 执行ping命令
-    ping -c 2 "$ip" > number.txt  # 这里的-c 4表示ping 4次，您可以根据需要更改
+    ping -c 2 "$ip" > number.txt
 done < "node_list"
 
 while read line
@@ -36,7 +34,6 @@ done < node_list_all
 
 read -p "please enter the test number(2000, 4000, 6000, 8000, 10000): " number
 
-#scp root@$(cat node_exec):/root/kubeconfig.yaml /root/kubeconfig.yaml
 echo $number
 echo $number >> number.txt
 echo "start deployment" >> number.txt
