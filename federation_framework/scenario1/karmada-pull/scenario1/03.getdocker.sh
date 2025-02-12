@@ -3,8 +3,6 @@ j=1
 
 for i in $(cat node_exec)
 do 
-	ssh root@$i . /root/edgesys-2025/federation_framework/karmada-pull/scenario1/script/getlog.sh
-	scp root@$i:/root/logs.txt /root/edgesys-2025/federation_framework/karmada-pull/scenario1/results/logs.txt
 	scp root@$i:/root/kubetopPodDNS.csv /root/edgesys-2025/federation_framework/karmada-pull/scenario1/results/kubetopPodDNS.csv
 	scp root@$i:/root/kubetopPodWA.csv /root/edgesys-2025/federation_framework/karmada-pull/scenario1/results/kubetopPodWA.csv
 	scp root@$i:/root/kubetopPodRA.csv /root/edgesys-2025/federation_framework/karmada-pull/scenario1/results/kubetopPodRA.csv
