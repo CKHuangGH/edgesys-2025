@@ -17,7 +17,7 @@ echo $(date +'%s.%N') >> number.txt
 # . ./checking_deployment_kpull.sh $number &
 # . ./checking_kpull.sh $number
 
-exec -a tophub ./script/tophub.sh > /dev/null 2>&1 &
+exec -a tophub bash -c "./script/tophub.sh" > /dev/null 2>&1 &
 
 for i in $(cat node_exec)
 do 
