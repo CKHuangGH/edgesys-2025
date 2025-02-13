@@ -4,8 +4,6 @@ kubectl get pod -A --context cluster1
 cp ../node_list node_list
 cp ../node_list_all node_list_all
 
-kubectl apply -f ./propagationpolicy.yaml --kubeconfig /etc/karmada/karmada-apiserver.config
-
 input_file="node_list_all"
 output_file="node_exec"
 
