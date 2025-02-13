@@ -37,7 +37,7 @@ kubectl karmada unregister cluster1 --cluster-kubeconfig /root/.kube/cluster1
 
 echo "y" | kubectl karmada deinit
 
-rm -f /var/lib/karmada-etcd
+rm -rf /var/lib/karmada-etcd
 
 rm -f ./number.txt
 

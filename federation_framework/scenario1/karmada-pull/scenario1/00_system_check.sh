@@ -17,11 +17,3 @@ if [ -f "$input_file" ]; then
 else
     echo "fail to open $input_file"
 fi
-
-while read -r ip; do
-    if [[ "$ip" =~ ^[[:space:]]*$ || "$ip" =~ ^\s*# ]]; then
-        continue
-    fi
-
-    ping -c 2 "$ip" > number.txt
-done < "node_list"

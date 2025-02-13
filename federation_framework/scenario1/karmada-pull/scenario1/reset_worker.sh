@@ -10,3 +10,5 @@ if [ -n "$PIDS" ]; then
 else
     echo "No bash processes found."
 fi
+
+rm -f kubetopPodWA.csv
