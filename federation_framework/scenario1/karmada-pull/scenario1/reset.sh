@@ -11,14 +11,24 @@ else
     echo "No tcpdump processes found."
 fi
 
-
-echo "Searching for and terminating tcpdump-related processes..."
-PIDS=$(pgrep -f "tcpdump")
+echo "Searching for and terminating bash-related processes..."
+PIDS=$(pgrep -f "tophub")
 
 if [ -n "$PIDS" ]; then
     echo "Found the following processes: $PIDS"
     kill -9 $PIDS
-    echo "All tcpdump processes have been terminated."
+    echo "All bash processes have been terminated."
 else
-    echo "No tcpdump processes found."
+    echo "No bash processes found."
+fi
+
+echo "Searching for and terminating bash-related processes..."
+PIDS=$(pgrep -f "toppodwa")
+
+if [ -n "$PIDS" ]; then
+    echo "Found the following processes: $PIDS"
+    kill -9 $PIDS
+    echo "All bash processes have been terminated."
+else
+    echo "No bash processes found."
 fi

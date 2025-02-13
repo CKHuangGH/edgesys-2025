@@ -12,6 +12,6 @@ mv cross /root/edgesys-2025/federation_framework/scenario1/karmada-pull/scenario
 mv number.txt /root/edgesys-2025/federation_framework/scenario1/karmada-pull/scenario1/results/number.txt
 sleep 5
 random_number=$((1 + $RANDOM))
-scp -o StrictHostKeyChecking=no -r /root/edgesys-2025/federation_framework/scenario1/karmada-pull/scenario1/results chuang@172.16.111.106:/home/chuang/results$number-$time-karmada-pull
+scp -o StrictHostKeyChecking=no -r /root/edgesys-2025/federation_framework/scenario1/karmada-pull/scenario1/results chuang@172.16.207.100:/home/chuang/results$number-$time-karmada-pull
 
 echo "-----------------------copy ok -------------------------------"
