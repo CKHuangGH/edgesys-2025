@@ -2,16 +2,16 @@
 i=0
 manage=$(awk NR==1 node_list)
 git clone https://github.com/CKHuangGH/edgesys-2025
-rm -rf /home/chuang/.ssh/known_hosts
+rm -rf ./.ssh/known_hosts
 
 for j in $(cat node_list)
 do
 
 scp -r ./edgesys-2025 root@$j:/root/ &
-scp /home/chuang/images/nginx.tar root@$j:/root/ &
-scp /home/chuang/kubectl-karmada root@$j:/usr/local/bin/kubectl-karmada &
-
-scp /home/chuang/.ssh/id_rsa root@$j:/root/.ssh &
+scp -r ./karmada_package root@$j:/root/ &
+scp ./images/nginx.tar root@$j:/root/ &
+scp ./kubectl-karmada root@$j:/usr/local/bin/kubectl-karmada &
+scp ./.ssh/id_rsa root@$j:/root/.ssh &
 done
 
 sleep 20
