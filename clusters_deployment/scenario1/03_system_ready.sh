@@ -8,7 +8,7 @@ for j in $(cat node_list)
 do
 
 scp -r ./edgesys-2025 root@$j:/root/ &
-scp -r ./karmada_package root@$j:/root/ &
+# scp -r ./karmada_package root@$j:/root/ &
 scp ./images/nginx.tar root@$j:/root/ &
 scp ./kubectl-karmada root@$j:/usr/local/bin/kubectl-karmada &
 scp ./.ssh/id_rsa root@$j:/root/.ssh &
