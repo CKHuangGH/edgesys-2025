@@ -1,6 +1,6 @@
 
 # 迴圈 500 次
-for ((i=1; i<=200; i++)); do
+for ((i=1; i<=2; i++)); do
     deployment_yaml=$(cat <<EOF
 apiVersion: apps/v1
 kind: Deployment

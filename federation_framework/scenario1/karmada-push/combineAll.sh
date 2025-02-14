@@ -44,9 +44,10 @@ cluster=1
 for i in $(cat node_list)
 do
 	ssh-keyscan $i >> /root/.ssh/known_hosts
+  scp /usr/local/bin/kubectl-karmada root@$i:/usr/local/bin/kubectl-karmada
 	scp /root/.kube/config root@$i:/root/.kube
-	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/karmada-push/worker_node.sh
-	ssh root@$i sh /root/edgesys-2025/federation_framework/karmada-push/worker_node.sh $cluster &
+	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/scenario1/karmada-push/worker_node.sh
+	ssh root@$i sh /root/edgesys-2025/federation_framework/scenario1/karmada-push/worker_node.sh $cluster &
 	cluster=$((cluster+1))
 done
 

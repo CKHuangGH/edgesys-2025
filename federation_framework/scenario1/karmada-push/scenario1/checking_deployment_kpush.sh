@@ -1,10 +1,8 @@
 numberofpod=$1
 result=$((numberofpod / 10))
-LABEL_SELECTOR="vcluster.loft.sh/namespace=default"
-NUM_PODS=$result # 修改為您的Pod數量
-SLEEP_INTERVAL=1  # 檢查狀態的間隔時間（秒）
+NUM_PODS=$result
+SLEEP_INTERVAL=1
 
-# 等待所有Pod都變成運行狀態
 while true; do
     running_pods=$(kubectl get deployment --context cluster1 --no-headers | wc -l)
     echo "deployment: "$running_pods
