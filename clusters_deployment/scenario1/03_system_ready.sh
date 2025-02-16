@@ -2,16 +2,16 @@
 i=0
 manage=$(awk NR==1 node_list)
 git clone https://github.com/CKHuangGH/edgesys-2025
-rm -rf ./.ssh/known_hosts
+rm -rf /home/chuang/.ssh/known_hosts
 
 for j in $(cat node_list)
 do
 
 scp -r ./edgesys-2025 root@$j:/root/ &
 # scp -r ./karmada_package root@$j:/root/ &
-scp ./images/nginx.tar root@$j:/root/ &
-scp ./kubectl-karmada root@$j:/usr/local/bin/kubectl-karmada &
-scp ./.ssh/id_rsa root@$j:/root/.ssh &
+
+scp /home/chuang/kubectl-karmada root@$j:/usr/local/bin/kubectl-karmada &
+scp /home/chuang/.ssh/id_rsa root@$j:/root/.ssh &
 done
 
 sleep 20
@@ -23,6 +23,7 @@ ssh -o StrictHostKeyChecking=no root@$j chmod 777 -R /root/edgesys-2025/
 i=$((i+1))
 done
 
+scp /home/chuang/images/nginx.tar root@$manage:/root/
 scp node_list root@$manage:/root/edgesys-2025/federation_framework/scenario1/ocm/node_list
 scp node_list root@$manage:/root/edgesys-2025/federation_framework/scenario1/karmada-pull/node_list
 scp node_list root@$manage:/root/edgesys-2025/federation_framework/scenario1/karmada-push/node_list
