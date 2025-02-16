@@ -14,4 +14,5 @@ for (( times=0; times<3; times++ )); do
 	    ssh root@$ip . /root/edgesys-2025/federation_framework/scenario1/karmada-pull/scenario1/reset_worker.sh
     done
     rm -rf results
+    sleep 60
 done

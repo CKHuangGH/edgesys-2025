@@ -1,6 +1,5 @@
 number=$1
 
-
 sudo rm -rf /usr/bin/kubectl
 
 sudo curl -LO https://dl.k8s.io/release/v1.32.1/bin/linux/amd64/kubectl
@@ -45,9 +44,10 @@ cluster=1
 for i in $(cat node_list)
 do
 	ssh-keyscan $i >> /root/.ssh/known_hosts
+  scp /usr/local/bin/kubectl-karmada root@$i:/usr/local/bin/kubectl-karmada
 	scp /root/.kube/config root@$i:/root/.kube
-	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/ocm/worker_node.sh
-	ssh root@$i sh /root/edgesys-2025/federation_framework/ocm/worker_node.sh $cluster &
+	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/scenario1/ocm/worker_node.sh
+	ssh root@$i sh /root/edgesys-2025/federation_framework/scenario1/ocm/worker_node.sh $cluster &
 	cluster=$((cluster+1))
 done
 
@@ -102,12 +102,34 @@ done
 while IFS= read -r ip_address; do
   echo "send to $ip_address"
   scp -o StrictHostKeyChecking=no /root/nginx.tar root@$ip_address:/root/
+  # scp -o StrictHostKeyChecking=no /root/karmada_package/docker_io_karmada_karmada_agent_v1_12_3.tar root@$ip_address:/root/
 done < "node_ip"
 
 while IFS= read -r ip_address; do
   echo "import to $ip_address"
   ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import nginx.tar &
+  # ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import docker_io_karmada_karmada_agent_v1_12_3.tar &
 done < "node_ip"
+
+# # Change to the images directory
+# cd ./karmada_package
+
+# # Import all .tar and .tar.gz container images
+# for image in *.tar *.tar.gz; do
+#     if [ -f "$image" ]; then
+#         echo "📦 Importing image: $image"
+#         ctr -n k8s.io images import "$image"
+#         if [ $? -eq 0 ]; then
+#             echo "✅ Successfully imported $image"
+#         else
+#             echo "❌ Failed to import $image"
+#         fi
+#     fi
+# done
+
+# echo "🎉 All images have been imported!"
+
+
 
 
 echo "-------------------------------------- OK --------------------------------------"

@@ -11,6 +11,7 @@ scp -r ./edgesys-2025 root@$j:/root/ &
 # scp -r ./karmada_package root@$j:/root/ &
 
 scp /home/chuang/kubectl-karmada root@$j:/usr/local/bin/kubectl-karmada &
+scp /home/chuang/clusteradm root@$j:/usr/local/bin/clusteradm &
 scp /home/chuang/.ssh/id_rsa root@$j:/root/.ssh &
 done
 
