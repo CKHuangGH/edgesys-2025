@@ -1,6 +1,4 @@
 #!/bin/bash
-set -euo pipefail
-
 # Switch to the specified Kubernetes context
 kubectl config use-context cluster0
 
@@ -30,4 +28,5 @@ do
 done
 
 sleep 10
+
 ./auto.sh
