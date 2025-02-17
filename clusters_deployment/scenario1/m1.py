@@ -39,7 +39,7 @@ conf = (
     roles=["role0"], cluster=clusters, nodes=1, primary_network=prod_network
     )
     .add_machine(
-    roles=["role1"], cluster=clusters, nodes=1, primary_network=prod_network
+    roles=["role1"], cluster=clusters, nodes=11, primary_network=prod_network
     )
     .finalize()
 )
@@ -49,7 +49,7 @@ roles = en.sync_info(roles, networks)
 
 subnet = networks["my_subnet"]
 cp = 1
-w=2
+w=100
 
 virt_conf = (
     en.VMonG5kConf.from_settings(image="/home/chuang/images/newimages.qcow2")
