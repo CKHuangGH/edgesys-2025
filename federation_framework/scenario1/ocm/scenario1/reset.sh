@@ -33,6 +33,8 @@ else
     echo "No bash processes found."
 fi
 
+sleep 10
+
 # Loop through cluster numbers 1 to 100
 for i in $(seq 1 1); do
     # Retrieve CSR names that match the pattern "cluster<i>-"
@@ -51,7 +53,22 @@ for i in $(seq 1 1); do
     done
 done
 
-clusteradm clean
+sleep 10
+
+while true; do
+    echo "clusteradm clean ..."
+    clusteradm clean
+
+    if [ $? -eq 0 ]; then
+        echo "done"
+        break
+    else
+        echo "fail and clean again"
+        sleep 5
+    fi
+done
+
+sleep 10
 
 for ((i=1; i<=1; i++)); do
     kubectl delete ns cluster$i
