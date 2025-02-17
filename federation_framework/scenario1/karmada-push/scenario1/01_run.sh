@@ -7,6 +7,8 @@ for (( times=0; times<3; times++ )); do
     mkdir results
     . ./02_run_stress_kpush.sh $number
     . ./03.getdocker.sh $number $times
+    sleep 30
+    . ./script/r$number.sh
     sleep 20
     . ./reset.sh
     rm -rf results
