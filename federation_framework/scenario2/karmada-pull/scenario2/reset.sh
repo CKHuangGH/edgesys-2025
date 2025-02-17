@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clusternumber=$1
 echo "Searching for and terminating tcpdump-related processes..."
 PIDS=$(pgrep -f "tcpdump")
 
@@ -33,12 +33,19 @@ else
     echo "No bash processes found."
 fi
 
-kubectl karmada unregister cluster1 --cluster-kubeconfig /root/.kube/cluster1
+for (( i=1; i<=$clusternumber; i++ )); do
+    kubectl karmada unregister cluster$i --cluster-kubeconfig /root/.kube/cluster$i
+    sleep 1
+done
+
+sleep 10
 
 echo "y" | kubectl karmada deinit
 
 rm -rf /var/lib/karmada-etcd
 
 rm -f ./number.txt
+
+rm -f ./cross
 
 rm -f ./kubetopPodHUB.csv

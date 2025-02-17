@@ -33,12 +33,19 @@ else
     echo "No bash processes found."
 fi
 
-kubectl-karmada unjoin cluster1
+for (( i=1; i<=$clusternumber; i++ )); do
+    kubectl-karmada unjoin cluster$i
+    sleep 1
+done
+
+sleep 10
 
 echo "y" | kubectl karmada deinit
 
 rm -rf /var/lib/karmada-etcd
 
 rm -f ./number.txt
+
+rm -f ./cross
 
 rm -f ./kubetopPodHUB.csv

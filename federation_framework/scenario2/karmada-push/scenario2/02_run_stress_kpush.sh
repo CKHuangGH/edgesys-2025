@@ -12,7 +12,6 @@ echo $number
 echo $number >> number.txt
 echo "start deployment" >> number.txt
 echo $(date +'%s.%N') >> number.txt
-. ./script/$number.sh > /dev/null 2>&1 &
 
 exec -a tophub bash -c "./script/tophub.sh" > /dev/null 2>&1 &
 

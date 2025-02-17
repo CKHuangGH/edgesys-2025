@@ -41,4 +41,6 @@ rm -rf /var/lib/karmada-etcd
 
 rm -f ./number.txt
 
+rm -f ./cross
+
 rm -f ./kubetopPodHUB.csv

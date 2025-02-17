@@ -35,7 +35,6 @@ fi
 
 sleep 10
 
-# Loop through cluster numbers 1 to 100
 for i in $(seq 1 1); do
     # Retrieve CSR names that match the pattern "cluster<i>-"
     csr_names=$(kubectl get csr --no-headers -o custom-columns=NAME:.metadata.name | grep "^cluster${i}-")
@@ -52,6 +51,8 @@ for i in $(seq 1 1); do
         kubectl delete csr "$csr"
     done
 done
+
+kubectl delete mcl cluster1
 
 sleep 10
 
@@ -78,4 +79,5 @@ rm -f ./number.txt
 rm -f temp.sh
 rm -f run.sh
 rm -f run1.sh
+rm -f ./cross
 rm -f ./kubetopPodHUB.csv
