@@ -107,8 +107,8 @@ done < "node_ip"
 
 while IFS= read -r ip_address; do
   echo "import to $ip_address"
-  ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import nginx.tar &
-  ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import docker_io_karmada_karmada_agent_v1_12_3.tar &
+  ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import nginx.tar
+  ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import docker_io_karmada_karmada_agent_v1_12_3.tar
 done < "node_ip"
 
 # Change to the images directory

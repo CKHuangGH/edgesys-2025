@@ -1,4 +1,4 @@
-read -p "please enter the test number(2000, 4000, 6000, 8000, 10000): " number
+number=$1
 
 for (( times=0; times<10; times++ )); do
     . ./init_reg.sh
