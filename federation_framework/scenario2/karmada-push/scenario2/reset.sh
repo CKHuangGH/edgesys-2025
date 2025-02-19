@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clusternumber=$1
 echo "Searching for and terminating tcpdump-related processes..."
 PIDS=$(pgrep -f "tcpdump")
 

@@ -16,4 +16,4 @@ else
     echo "fail to open $input_file"
 fi
 
-echo "nohup ./test.sh 10000 &"
+echo "screen -S mysession"

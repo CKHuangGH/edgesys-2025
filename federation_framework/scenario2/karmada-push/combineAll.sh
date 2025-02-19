@@ -44,7 +44,6 @@ cluster=1
 for i in $(cat node_list)
 do
 	ssh-keyscan $i >> /root/.ssh/known_hosts
-  scp /usr/local/bin/kubectl-karmada root@$i:/usr/local/bin/kubectl-karmada
 	scp /root/.kube/config root@$i:/root/.kube
 	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/scenario2/karmada-push/worker_node.sh
 	ssh root@$i sh /root/edgesys-2025/federation_framework/scenario2/karmada-push/worker_node.sh $cluster &
@@ -89,25 +88,5 @@ do
   kubectl --context=cluster$i create -f metrics_server.yaml
 done
 sleep 5
-
-
-ip=$(cat node_list)
-
-for i in {1..3}
-do
-  new_ip=$(echo $ip | sed "s/\.1$/.$i/")
-  echo "$new_ip" >> node_ip
-done
-
-while IFS= read -r ip_address; do
-  echo "send to $ip_address"
-  scp -o StrictHostKeyChecking=no /root/nginx.tar root@$ip_address:/root/
-done < "node_ip"
-
-while IFS= read -r ip_address; do
-  echo "import to $ip_address"
-  ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import nginx.tar &
-done < "node_ip"
-
 
 echo "-------------------------------------- OK --------------------------------------"

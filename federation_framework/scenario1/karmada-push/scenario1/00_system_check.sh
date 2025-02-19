@@ -15,3 +15,5 @@ if [ -f "$input_file" ]; then
 else
     echo "fail to open $input_file"
 fi
+
+echo "screen -S mysession"

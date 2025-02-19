@@ -1,12 +1,6 @@
 number=$1
 time=$2
-j=1
 
-for i in $(cat node_exec)
-do 
-	scp root@$i:/root/kubetopPodWA.csv /root/edgesys-2025/federation_framework/scenario2/karmada-pull/scenario2/results/kubetopPodWA.csv
-	j=$((j+1))	
-done
 mv kubetopPodHUB.csv /root/edgesys-2025/federation_framework/scenario2/karmada-pull/scenario2/results/kubetopPodHUB.csv
 mv cross /root/edgesys-2025/federation_framework/scenario2/karmada-pull/scenario2/results/cross
 mv number.txt /root/edgesys-2025/federation_framework/scenario2/karmada-pull/scenario2/results/number.txt
