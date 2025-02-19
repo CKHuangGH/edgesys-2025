@@ -6,7 +6,8 @@ from enoslib.infra.enos_vmong5k.configuration import Configuration
 import logging
 import time
 
-
+import enoslib as en
+en.set_config(ansible_forks=100)
 
 name = "mcdeploymaster-sdfcp-22"
 

@@ -11,6 +11,8 @@ import enoslib as en
 import logging
 import time
 
+en.set_config(ansible_forks=100)
+
 name = "m1-sdfcp-22"
 
 clusters = "ecotype"
