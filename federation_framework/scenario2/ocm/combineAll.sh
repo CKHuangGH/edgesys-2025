@@ -1,6 +1,5 @@
 number=$1
 
-
 sudo rm -rf /usr/bin/kubectl
 
 sudo curl -LO https://dl.k8s.io/release/v1.32.1/bin/linux/amd64/kubectl
@@ -46,8 +45,8 @@ for i in $(cat node_list)
 do
 	ssh-keyscan $i >> /root/.ssh/known_hosts
 	scp /root/.kube/config root@$i:/root/.kube
-	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/ocm/worker_node.sh
-	ssh root@$i sh /root/edgesys-2025/federation_framework/ocm/worker_node.sh $cluster &
+	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/scenario2/ocm/worker_node.sh
+	ssh root@$i sh /root/edgesys-2025/federation_framework/scenario2/ocm/worker_node.sh $cluster &
 	cluster=$((cluster+1))
 done
 
@@ -90,24 +89,72 @@ do
 done
 sleep 5
 
-
+# 讀取初始 node ip (例如 10.10.10.1)
 ip=$(cat node_list)
 
-for i in {1..101}
-do
-  new_ip=$(echo $ip | sed "s/\.1$/.$i/")
+# 生成 node_ip 檔案，依據原始 IP 的前三段，替換最後一段為 1 到 101
+> node_ip  # 先清空 node_ip 檔案
+for i in {1..101}; do
+  new_ip=$(echo "$ip" | sed "s/\.[0-9]*$/.${i}/")
   echo "$new_ip" >> node_ip
 done
 
+# 傳送 tar 檔到各個節點
 while IFS= read -r ip_address; do
-  echo "send to $ip_address"
+  echo "傳送檔案到 $ip_address ..."
   scp -o StrictHostKeyChecking=no /root/nginx.tar root@$ip_address:/root/
+  #scp -o StrictHostKeyChecking=no /root/karmada_package/docker_io_karmada_karmada_agent_v1_12_3.tar root@$ip_address:/root/
 done < "node_ip"
 
+# 在各節點進行 image import 並持續重試直到成功
 while IFS= read -r ip_address; do
-  echo "import to $ip_address"
-  ssh -o StrictHostKeyChecking=no root@$ip_address ctr -n k8s.io images import nginx.tar &
+  echo "在 $ip_address 進行 image import..."
+
+  # 匯入 nginx image，直到成功為止
+  while true; do
+      ssh -o StrictHostKeyChecking=no root@$ip_address "ctr -n k8s.io images import /root/nginx.tar </dev/null"
+      if [ $? -eq 0 ]; then
+          echo "nginx image 在 $ip_address 匯入成功"
+          break
+      else
+          echo "nginx image 在 $ip_address 匯入失敗，重試中..."
+          sleep 2  # 等待 2 秒再重試
+      fi
+  done
+
+  # 匯入 karmada agent image，直到成功為止
+#   while true; do
+#       ssh -o StrictHostKeyChecking=no root@$ip_address "ctr -n k8s.io images import /root/docker_io_karmada_karmada_agent_v1_12_3.tar </dev/null"
+#       if [ $? -eq 0 ]; then
+#           echo "karmada agent image 在 $ip_address 匯入成功"
+#           break
+#       else
+#           echo "karmada agent image 在 $ip_address 匯入失敗，重試中..."
+#           sleep 2  # 等待 2 秒再重試
+#       fi
+#   done
+
 done < "node_ip"
+
+# Change to the images directory
+# cd /root/karmada_package
+
+# # Import all .tar and .tar.gz container images
+# for image in *.tar *.tar.gz; do
+#     if [ -f "$image" ]; then
+#         echo "📦 Importing image: $image"
+#         ctr -n k8s.io images import "$image"
+#         if [ $? -eq 0 ]; then
+#             echo "✅ Successfully imported $image"
+#         else
+#             echo "❌ Failed to import $image"
+#         fi
+#     fi
+# done
+
+# echo "🎉 All images have been imported!"
+
+
 
 
 echo "-------------------------------------- OK --------------------------------------"

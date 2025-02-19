@@ -1,43 +1,43 @@
 #!/bin/bash
 
-set -e  # 啟用錯誤檢測，任何錯誤都會導致腳本終止
+set -e  # Enable error detection, any error will terminate the script
 
 CONFIG_FILE="/etc/containerd/config.toml"
 BACKUP_FILE="/etc/containerd/config.toml.bak"
 
-# **備份原始設定檔**
-echo "🔄 備份原始 $CONFIG_FILE 到 $BACKUP_FILE"
+# **Backup the original configuration file**
+echo "🔄 Backing up $CONFIG_FILE to $BACKUP_FILE"
 sudo cp $CONFIG_FILE $BACKUP_FILE
 
-# **修改 containerd 配置**
-echo "🛠 更新 containerd 鏡像站點配置"
+# **Modify containerd configuration**
+echo "🛠 Updating containerd registry configuration"
 
-# 確保 `[plugins."io.containerd.grpc.v1.cri".registry]` 存在
+# Ensure `[plugins."io.containerd.grpc.v1.cri".registry]` exists
 if ! grep -q '\[plugins."io.containerd.grpc.v1.cri".registry\]' $CONFIG_FILE; then
     echo -e "\n[plugins.\"io.containerd.grpc.v1.cri\".registry]\n" | sudo tee -a $CONFIG_FILE > /dev/null
 fi
 
-# 檢查 `docker.io` 是否已經有鏡像站點設定，如果有則更新，否則新增
+# Check if `docker.io` already has a mirror configuration, update if exists, otherwise add a new one
 if grep -q '\[plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"\]' $CONFIG_FILE; then
     sudo sed -i '/\[plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"\]/,/endpoint/d' $CONFIG_FILE
 fi
 
-# 新增或替換 `docker.io` 的 `endpoint`
+# Add or replace the `docker.io` mirror endpoint
 sudo tee -a $CONFIG_FILE > /dev/null <<EOL
 [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
   endpoint = ["http://docker-cache.grid5000.fr"]
 EOL
 
-echo "✅ 鏡像站點已更新為 http://docker-cache.grid5000.fr"
+echo "✅ Registry mirror updated to http://docker-cache.grid5000.fr"
 
-# **重新啟動 containerd**
-echo "🔄 重新啟動 containerd..."
+# **Restart containerd**
+echo "🔄 Restarting containerd..."
 sudo systemctl restart containerd
 
-# **確認 containerd 是否成功運行**
+# **Verify if containerd is running successfully**
 if systemctl is-active --quiet containerd; then
-    echo "✅ containerd 重新啟動成功！"
+    echo "✅ containerd restarted successfully!"
 else
-    echo "❌ containerd 啟動失敗，請檢查 $CONFIG_FILE"
+    echo "❌ containerd failed to start, please check $CONFIG_FILE"
     exit 1
 fi
