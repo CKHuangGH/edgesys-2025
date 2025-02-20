@@ -60,6 +60,7 @@ sudo apt install ntpdate -y
 sudo service ntp stop
 sudo ntpdate ntp.midway.ovh
 sudo service ntp start
+sudo apt install screen -y
 
 # Install helm3
 echo "Helm3"
@@ -103,58 +104,11 @@ done
 while IFS= read -r ip_address; do
   echo "傳送檔案到 $ip_address ..."
   scp -o StrictHostKeyChecking=no /root/nginx.tar root@$ip_address:/root/
-  #scp -o StrictHostKeyChecking=no /root/karmada_package/docker_io_karmada_karmada_agent_v1_12_3.tar root@$ip_address:/root/
 done < "node_ip"
 
-# 在各節點進行 image import 並持續重試直到成功
 while IFS= read -r ip_address; do
-  echo "在 $ip_address 進行 image import..."
-
-  # 匯入 nginx image，直到成功為止
-  while true; do
-      ssh -o StrictHostKeyChecking=no root@$ip_address "ctr -n k8s.io images import /root/nginx.tar </dev/null"
-      if [ $? -eq 0 ]; then
-          echo "nginx image 在 $ip_address 匯入成功"
-          break
-      else
-          echo "nginx image 在 $ip_address 匯入失敗，重試中..."
-          sleep 2  # 等待 2 秒再重試
-      fi
-  done
-
-  # 匯入 karmada agent image，直到成功為止
-#   while true; do
-#       ssh -o StrictHostKeyChecking=no root@$ip_address "ctr -n k8s.io images import /root/docker_io_karmada_karmada_agent_v1_12_3.tar </dev/null"
-#       if [ $? -eq 0 ]; then
-#           echo "karmada agent image 在 $ip_address 匯入成功"
-#           break
-#       else
-#           echo "karmada agent image 在 $ip_address 匯入失敗，重試中..."
-#           sleep 2  # 等待 2 秒再重試
-#       fi
-#   done
-
+  echo "傳送檔案到 $ip_address ..."
+  ssh -o StrictHostKeyChecking=no root@$ip_address "ctr -n k8s.io images import /root/nginx.tar" </dev/null &
 done < "node_ip"
-
-# Change to the images directory
-# cd /root/karmada_package
-
-# # Import all .tar and .tar.gz container images
-# for image in *.tar *.tar.gz; do
-#     if [ -f "$image" ]; then
-#         echo "📦 Importing image: $image"
-#         ctr -n k8s.io images import "$image"
-#         if [ $? -eq 0 ]; then
-#             echo "✅ Successfully imported $image"
-#         else
-#             echo "❌ Failed to import $image"
-#         fi
-#     fi
-# done
-
-# echo "🎉 All images have been imported!"
-
-
-
 
 echo "-------------------------------------- OK --------------------------------------"
