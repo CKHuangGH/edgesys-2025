@@ -20,6 +20,8 @@ sudo install -o root -g root -m 0755 kubectl /usr/bin/kubectl
 
 curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"  | bash
 
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+
 echo "copy metrics_server.yaml-----------------------"
 mv /root/edgesys-2025/federation_framework/scenario2/ocm/metrics_server.yaml /root/
 cp /root/edgesys-2025/federation_framework/scenario2/ocm/node_list /root/

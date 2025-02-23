@@ -1,6 +1,6 @@
 read -p "please enter the test number(1, 50, 100, 150, 200): " number
 
-for (( times=0; times<10; times++ )); do
+for (( times=0; times<12; times++ )); do
     . ./init_reg.sh
     sleep 30
     mkdir results
