@@ -40,12 +40,6 @@ done < node_list_all
 
 kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 
-# Remove the NoSchedule taint from the control-plane on all nodes listed in 'node_list'
-for i in $(cat node_list)
-do
-    ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
-done
-
 cluster=1
 for i in $(cat node_list)
 do
@@ -53,6 +47,7 @@ do
 	scp /root/.kube/config root@$i:/root/.kube
 	ssh root@$i chmod 777 /root/edgesys-2025/federation_framework/scenario2/ocm/worker_node.sh
 	ssh root@$i sh /root/edgesys-2025/federation_framework/scenario2/ocm/worker_node.sh $cluster &
+    ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
 	cluster=$((cluster+1))
 done
 
