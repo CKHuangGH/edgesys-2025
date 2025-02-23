@@ -8,7 +8,7 @@ import time
 import enoslib as en
 en.set_config(ansible_forks=100)
 
-name = "mcdeploymaster-sdfcp-22"
+name = "mcdeploymaster-sdfcp-32"
 
 clusters = ["ecotype"]
 

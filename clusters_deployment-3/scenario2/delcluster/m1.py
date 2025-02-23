@@ -11,7 +11,7 @@ import enoslib as en
 import logging
 import time
 
-name = "m2-sdfcp-1"
+name = "m3-sdfcp-1"
 
 clusters = "ecotype"
 
