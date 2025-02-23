@@ -8,7 +8,6 @@ for j in $(cat node_list)
 do
 
 scp -r ./edgesys-2025 root@$j:/root/ &
-# scp -r ./karmada_package root@$j:/root/ &
 
 scp /home/chuang/kubectl-karmada root@$j:/usr/local/bin/kubectl-karmada &
 scp /home/chuang/clusteradm root@$j:/usr/local/bin/clusteradm &
@@ -25,6 +24,7 @@ i=$((i+1))
 done
 
 scp /home/chuang/images/nginx.tar root@$manage:/root/
+scp -r /home/chuang/karmada_package root@$manage:/root/
 scp node_list root@$manage:/root/edgesys-2025/federation_framework/scenario1/ocm/node_list
 scp node_list root@$manage:/root/edgesys-2025/federation_framework/scenario1/karmada-pull/node_list
 scp node_list root@$manage:/root/edgesys-2025/federation_framework/scenario1/karmada-push/node_list
