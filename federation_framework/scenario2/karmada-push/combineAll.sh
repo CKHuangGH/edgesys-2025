@@ -60,6 +60,7 @@ sudo apt install ntpdate -y
 sudo service ntp stop
 sudo ntpdate ntp.midway.ovh
 sudo service ntp start
+sudo apt install screen -y
 
 # Install helm3
 echo "Helm3"
@@ -88,5 +89,39 @@ do
   kubectl --context=cluster$i create -f metrics_server.yaml
 done
 sleep 5
+
+# 傳送 tar 檔到各個節點
+while IFS= read -r ip_address; do
+  echo "傳送檔案到 $ip_address ..."
+  # scp -o StrictHostKeyChecking=no /root/nginx.tar root@$ip_address:/root/
+  scp -o StrictHostKeyChecking=no /root/karmada_package/docker_io_karmada_karmada_agent_v1_12_3.tar root@$ip_address:/root/
+done < "node_list"
+
+while IFS= read -r ip_address; do
+  echo "傳送檔案到 $ip_address ..."
+  # ssh -o StrictHostKeyChecking=no root@$ip_address "ctr -n k8s.io images import /root/nginx.tar" </dev/null &
+  ssh -o StrictHostKeyChecking=no root@$ip_address "ctr -n k8s.io images import /root/docker_io_karmada_karmada_agent_v1_12_3.tar" </dev/null &
+done < "node_list"
+
+# Change to the images directory
+cd /root/karmada_package
+
+# Import all .tar and .tar.gz container images
+for image in *.tar *.tar.gz; do
+    if [ -f "$image" ]; then
+        echo "📦 Importing image: $image"
+        ctr -n k8s.io images import "$image"
+        if [ $? -eq 0 ]; then
+            echo "✅ Successfully imported $image"
+        else
+            echo "❌ Failed to import $image"
+        fi
+    fi
+done
+
+echo "🎉 All images have been imported!"
+
+
+
 
 echo "-------------------------------------- OK --------------------------------------"
