@@ -38,7 +38,13 @@ ip2=$(echo $line | cut -d "." -f 3)
 break
 done < node_list_all
 
-kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
+
+# Remove the NoSchedule taint from the control-plane on all nodes listed in 'node_list'
+for i in $(cat node_list)
+do
+    ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
+done
 
 cluster=1
 for i in $(cat node_list)
