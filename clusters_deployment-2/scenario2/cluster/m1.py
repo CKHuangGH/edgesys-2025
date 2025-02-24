@@ -45,7 +45,7 @@ roles = en.sync_info(roles, networks)
 
 subnet = networks["my_subnet"]
 
-for i in range(0,1):
+for i in range(0,10):
     virt_conf = (
         en.VMonG5kConf.from_settings(image="/home/chuang/images/newimages.qcow2")
         .add_machine(
@@ -77,7 +77,7 @@ for i in range(0,1):
     run_ansible(["afterbuild.yml"], inventory_path=inventory_file)
 
 f = open("node_list", 'a')
-for i in range(0,1):
+for i in range(0,10):
     f.write(str(master_nodes[i]))
     f.write("\n")
 f.close
