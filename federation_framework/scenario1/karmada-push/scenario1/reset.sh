@@ -33,7 +33,7 @@ else
     echo "No bash processes found."
 fi
 
-kubectl-karmada unjoin cluster1
+kubectl-karmada unjoin cluster1 --kubeconfig /etc/karmada/karmada-apiserver.config
 
 echo "y" | kubectl karmada deinit
 

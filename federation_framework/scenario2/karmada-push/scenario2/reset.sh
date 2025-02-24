@@ -34,13 +34,23 @@ else
 fi
 
 for (( i=1; i<=$clusternumber; i++ )); do
-    kubectl-karmada unjoin cluster$i &
+    kubectl-karmada unjoin cluster$i --kubeconfig /etc/karmada/karmada-apiserver.config &
     sleep 1
 done
 
 wait
 
 sleep 10
+
+for (( i=1; i<=$clusternumber; i++ )); do
+    echo "Checking cluster$i ..."
+    while kubectl get clusters --kubeconfig /etc/karmada/karmada-apiserver.config 2>/dev/null | grep -q "cluster$i"; do
+        echo "[警告] cluster$i 仍存在嘗試再次進行 unjoin..."
+        kubectl-karmada unjoin cluster$i --kubeconfig /etc/karmada/karmada-apiserver.config
+        sleep 5  # 可自行調整休息時間，避免一直密集呼叫
+    done
+    echo "cluster$i 移除成功。"
+done
 
 echo "y" | kubectl karmada deinit
 

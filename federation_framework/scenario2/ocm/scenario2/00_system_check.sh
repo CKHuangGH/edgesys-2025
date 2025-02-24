@@ -1,3 +1,6 @@
+cp ../node_list node_list
+cp ../node_list_all node_list_all
+
 for i in $(cat node_list)
 do
     ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
@@ -7,9 +10,6 @@ sleep 5
 
 kubectl get pod -A
 kubectl get pod -A --context cluster1
-
-cp ../node_list node_list
-cp ../node_list_all node_list_all
 
 input_file="node_list_all"
 output_file="node_exec"
