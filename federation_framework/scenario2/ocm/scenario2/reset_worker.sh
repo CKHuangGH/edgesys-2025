@@ -12,5 +12,3 @@ else
 fi
 
 rm -f kubetopPodWA.csv
-
-clusteradm unjoin --cluster-name cluster1

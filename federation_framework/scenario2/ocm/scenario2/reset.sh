@@ -1,5 +1,5 @@
 #!/bin/bash
-
+number=$1
 echo "Searching for and terminating tcpdump-related processes..."
 PIDS=$(pgrep -f "tcpdump")
 
@@ -35,7 +35,7 @@ fi
 
 sleep 10
 
-for i in $(seq 1 1); do
+for i in $(seq 1 $number); do
     # Retrieve CSR names that match the pattern "cluster<i>-"
     csr_names=$(kubectl get csr --no-headers -o custom-columns=NAME:.metadata.name | grep "^cluster${i}-")
     
@@ -52,7 +52,9 @@ for i in $(seq 1 1); do
     done
 done
 
-kubectl delete mcl cluster1
+for ((i=1; i<=$number; i++)); do
+    kubectl delete mcl cluster$i
+done
 
 sleep 10
 
@@ -71,13 +73,20 @@ done
 
 sleep 10
 
-for ((i=1; i<=1; i++)); do
+cluster=1
+for i in $(cat node_list)
+do
+    ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
+	cluster=$((cluster+1))
+done
+
+for ((i=1; i<=$number; i++)); do
     kubectl delete ns cluster$i
+    rm -f run$i.sh
 done
 
 rm -f ./number.txt
 rm -f temp.sh
 rm -f run.sh
-rm -f run1.sh
 rm -f ./cross
 rm -f ./kubetopPodHUB.csv

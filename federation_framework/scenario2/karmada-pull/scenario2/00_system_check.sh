@@ -16,4 +16,9 @@ else
     echo "fail to open $input_file"
 fi
 
+for i in $(cat node_list)
+do
+    ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
+done
+
 echo "screen -S mysession"

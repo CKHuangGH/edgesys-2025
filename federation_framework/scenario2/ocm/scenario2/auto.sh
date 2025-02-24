@@ -38,6 +38,7 @@ cluster=1
 # Read nodes from the node_list file, one per line
 while read -r node; do
   run_on_node "$node" "$cluster" &
+  sleep 2
   cluster=$((cluster+1))
 done < node_list
 

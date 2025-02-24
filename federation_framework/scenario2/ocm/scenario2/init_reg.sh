@@ -21,12 +21,6 @@ while true; do
     sleep 10
 done
 
-# Remove the NoSchedule taint from the control-plane on all nodes listed in 'node_list'
-for i in $(cat node_list)
-do
-    ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
-done
-
 sleep 10
 
 ./auto.sh

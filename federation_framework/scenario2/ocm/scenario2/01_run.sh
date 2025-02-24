@@ -8,7 +8,7 @@ for (( times=0; times<12; times++ )); do
     . ./02_run_stress_ocm.sh $number
     . ./03.getdocker.sh $number $times
     sleep 30
-    . ./reset.sh
+    . ./reset.sh $number
     rm -rf results
     sleep 30
 done
