@@ -12,6 +12,7 @@ done < "node_list"
 
 echo $number
 echo $number >> number.txt
+kubectl get ns >> number.txt
 echo "start deployment" >> number.txt
 echo $(date +'%s.%N') >> number.txt
 

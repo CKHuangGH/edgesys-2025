@@ -8,5 +8,7 @@ REGISTER_CMD=$(kubectl karmada token create --print-register-command --kubeconfi
 
 for i in $(cat node_list)
 do
-    ssh root@$i eval "$REGISTER_CMD"
+    ssh root@$i eval "$REGISTER_CMD" &
 done
+
+wait

@@ -34,9 +34,11 @@ else
 fi
 
 for (( i=1; i<=$clusternumber; i++ )); do
-    kubectl-karmada unjoin cluster$i
+    kubectl-karmada unjoin cluster$i &
     sleep 1
 done
+
+wait
 
 sleep 10
 

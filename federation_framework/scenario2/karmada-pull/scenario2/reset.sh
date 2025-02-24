@@ -34,9 +34,11 @@ else
 fi
 
 for (( i=1; i<=$clusternumber; i++ )); do
-    kubectl karmada unregister cluster$i --cluster-kubeconfig /root/.kube/cluster$i
+    kubectl karmada unregister cluster$i --cluster-kubeconfig /root/.kube/cluster$i &
     sleep 1
 done
+
+wait
 
 sleep 10
 

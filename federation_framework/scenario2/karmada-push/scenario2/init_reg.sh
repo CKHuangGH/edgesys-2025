@@ -13,6 +13,8 @@ sleep 10
 cluster=1
 for i in $(cat node_list)
 do
-    kubectl karmada --kubeconfig /etc/karmada/karmada-apiserver.config  join cluster$cluster --cluster-kubeconfig=$HOME/.kube/cluster$cluster
+    kubectl karmada --kubeconfig /etc/karmada/karmada-apiserver.config  join cluster$cluster --cluster-kubeconfig=$HOME/.kube/cluster$cluster &
 	cluster=$((cluster+1))
 done
+
+wait
