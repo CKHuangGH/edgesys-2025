@@ -6,7 +6,7 @@ kubectl config use-context cluster0
 while true; do
     echo "Attempting to run clusteradm init..."
     # Run clusteradm init and redirect all output (stdout and stderr) to temp.sh
-    if clusteradm init --wait --context cluster0 > temp.sh 2>&1; then
+    if clusteradm init --wait > temp.sh 2>&1; then
         # Check if the expected keyword "clusteradm join" is present in the output
         if grep -q "clusteradm join" temp.sh; then
             echo "clusteradm init succeeded!"

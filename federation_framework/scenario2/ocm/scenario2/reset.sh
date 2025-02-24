@@ -35,6 +35,13 @@ fi
 
 sleep 10
 
+cluster=1
+for i in $(cat node_list)
+do
+    ssh root@$i clusteradm unjoin --cluster-name cluster$cluster
+	cluster=$((cluster+1))
+done
+
 for i in $(seq 1 $number); do
     # Retrieve CSR names that match the pattern "cluster<i>-"
     csr_names=$(kubectl get csr --no-headers -o custom-columns=NAME:.metadata.name | grep "^cluster${i}-")
@@ -72,13 +79,6 @@ while true; do
 done
 
 sleep 10
-
-cluster=1
-for i in $(cat node_list)
-do
-    ssh root@$i kubectl taint nodes --all node-role.kubernetes.io/control-plane:NoSchedule-
-	cluster=$((cluster+1))
-done
 
 for ((i=1; i<=$number; i++)); do
     kubectl delete ns cluster$i
