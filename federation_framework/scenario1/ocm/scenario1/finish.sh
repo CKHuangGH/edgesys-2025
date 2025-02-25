@@ -1,12 +1,12 @@
 #!/bin/bash
-number=$1
+
 # Determine the number of clusters based on the number of lines in the node_list file.
 max_clusters=$(wc -l < node_list)
 echo "Number of clusters determined from node_list: $max_clusters"
 
 # Define the desired adjusted namespace count.
 # Adjust this value as needed for your environment.
-DESIRED_NS_COUNT=$number
+DESIRED_NS_COUNT=1
 
 # Function to accept clusters using generated cluster names (cluster1, cluster2, ..., clusterN)
 accept_clusters() {
