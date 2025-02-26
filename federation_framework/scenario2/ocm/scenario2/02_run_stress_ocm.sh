@@ -13,6 +13,7 @@ done < "node_list"
 echo $number
 echo $number >> number.txt
 kubectl get ns >> number.txt
+clusteradm get clusters >> number.txt
 echo "start deployment" >> number.txt
 echo $(date +'%s.%N') >> number.txt
 
