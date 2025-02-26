@@ -16,7 +16,7 @@ clusters = ["ecotype"]
 
 master_nodes = []
 
-duration = "8:00:00"
+duration = "12:00:00"
 
 
 for i in range(0, len(clusters)):
